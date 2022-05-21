@@ -556,6 +556,7 @@ MonoBehaviour:
   enemiesKilled: 0
   enemyKillGoal: 5
   flash: {fileID: 1728039886}
+  pistol: {fileID: 1152013215}
 --- !u!1 &935677955
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +754,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 498036392d6c0374fa9a283b6c0fb842, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.164
+  m_Volume: 0.408
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1061,6 +1062,14 @@ PrefabInstance:
     - target: {fileID: 10800000, guid: ae12d87e2c868584f91d48cab717fe2b, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 21200000, guid: ae12d87e2c868584f91d48cab717fe2b, type: 3}
+      propertyPath: m_Color.a
+      value: 0.7882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 21200004, guid: ae12d87e2c868584f91d48cab717fe2b, type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae12d87e2c868584f91d48cab717fe2b, type: 3}
