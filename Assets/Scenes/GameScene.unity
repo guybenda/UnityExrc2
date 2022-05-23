@@ -2298,13 +2298,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45317eb6e8102841b28737dac2b891f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 100
+  health: 200
+  maxHealth: 200
   enemiesKilled: 0
   enemyKillGoal: 5
   flash: {fileID: 1728039886}
   pistol: {fileID: 1152013215}
-  damage: 34
+  damage: 25
 --- !u!136 &839298534
 CapsuleCollider:
   m_ObjectHideFlags: 0
