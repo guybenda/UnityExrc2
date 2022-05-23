@@ -48,7 +48,7 @@ public class PlayerScript : MonoBehaviour
 
         if (enemiesKilled >= enemyKillGoal)
         {
-            SceneManager.LoadScene("WinScene", LoadSceneMode.Single);
+            StartCoroutine(WinRoutine());
         }
     }
 
@@ -77,8 +77,14 @@ public class PlayerScript : MonoBehaviour
     {
         flash.SetActive(true);
         pistolAudioSource.Play();
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.04f);
         flash.SetActive(false);
         flash.transform.Rotate(Vector3.right * Random.Range(-180f, 180f));
+    }
+
+    IEnumerator WinRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("WinScene", LoadSceneMode.Single);
     }
 }
