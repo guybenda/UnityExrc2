@@ -78,7 +78,7 @@ public class EnemyScript : MonoBehaviour
             case EnemyState.chasing:
                 agent.destination = player.transform.position;
 
-                if ((player.transform.position - transform.position).magnitude < 1.7f)
+                if ((player.transform.position - transform.position).magnitude < 1.8f)
                 {
                     player.TakeDamage(1);
                 }

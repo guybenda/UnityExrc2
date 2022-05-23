@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -32,9 +33,13 @@ public class PlayerScript : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        health = Mathf.Clamp(health - damage, 0, health);
 
-        if (health < 0) health = 0;
+        if (health <= 0)
+        {
+            SceneManager.LoadScene("DeadScene", LoadSceneMode.Single);
+
+        }
     }
 
     public void EnemyKilled()
