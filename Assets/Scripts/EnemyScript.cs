@@ -1,7 +1,6 @@
-using UnityEngine;
-
-using UnityEngine.AI;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.AI;
 
 enum EnemyState
 {
@@ -19,7 +18,6 @@ public class EnemyScript : MonoBehaviour
 
     public Transform[] points;
 
-    private int destPoint = 0;
     private NavMeshAgent agent;
     private PlayerScript player;
     private Camera playerCamera;
@@ -116,9 +114,7 @@ public class EnemyScript : MonoBehaviour
         if (points.Length == 0)
             return;
 
-        agent.destination = points[destPoint].position;
-
-        destPoint = Random.Range(0, points.Length - 1);
+        agent.destination = points[Random.Range(0, points.Length - 1)].position;
     }
 
     public bool Damage(int damage)

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RayCast : MonoBehaviour
@@ -7,7 +5,7 @@ public class RayCast : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -18,7 +16,7 @@ public class RayCast : MonoBehaviour
         if (Physics.Raycast(transform.position, -Vector3.up, 0.8f))
         {
             Debug.Log("HEET");
-            gameObject.GetComponent<Rigidbody>().velocity += Vector3.up*5f;
+            gameObject.GetComponent<Rigidbody>().velocity += Vector3.up * 5f;
         }
     }
 }

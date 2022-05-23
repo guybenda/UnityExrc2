@@ -45,6 +45,11 @@ public class PlayerScript : MonoBehaviour
     public void EnemyKilled()
     {
         enemiesKilled++;
+
+        if (enemiesKilled >= enemyKillGoal)
+        {
+            SceneManager.LoadScene("WinScene", LoadSceneMode.Single);
+        }
     }
 
     public void Shoot()
