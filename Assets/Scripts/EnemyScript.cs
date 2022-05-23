@@ -7,25 +7,25 @@ enum EnemyState
 {
     idle,
     chasing,
-    attacking
+    dead
 }
 
 public class EnemyScript : MonoBehaviour
 {
-    EnemyState state = EnemyState.idle;
-    int playerNoticing = 0;
-    bool dead = false;
 
     public int health { get; private set; } = 100;
-    public int playerNoticeTreshold = 60;
-    public float detectDistance = 100;
+    public int playerNoticeTreshold = 120;
+    public float detectDistance = 30;
 
     public Transform[] points;
 
     private int destPoint = 0;
     private NavMeshAgent agent;
     private PlayerScript player;
+    private Camera playerCamera;
     private Animator animator;
+    private EnemyState state = EnemyState.idle;
+    private int playerNoticing = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -34,34 +34,31 @@ public class EnemyScript : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
+        playerCamera = GameObject.FindWithTag("Player").GetComponentInChildren<Camera>();
 
-        // Disabling auto-braking allows for continuous movement
-        // between points (ie, the agent doesn't slow down as it
-        // approaches a destination point).
-        agent.autoBraking = false;
 
         GotoNextPoint();
 
         animator.Play("Z_Run_InPlace");
     }
 
-    // Update is called once per frame
     void Update()
     {
         //Physics.Raycast() 
-        // Choose the next destination point when the agent gets
-        // close to the current one.
-        if (state == EnemyState.idle && !agent.pathPending && agent.remainingDistance < 0.5f)
-            GotoNextPoint();
     }
 
     void FixedUpdate()
     {
-        if (dead) return;
+        if (state == EnemyState.dead) return;
 
         if (TryFindPlayer())
         {
+            Debug.Log(gameObject.name + " CAN SEE PLAYER - " + playerNoticing);
             playerNoticing = Mathf.Clamp(playerNoticing + 1, 0, playerNoticeTreshold);
+        }
+        else
+        {
+            playerNoticing = Mathf.Clamp(playerNoticing - 1, 0, playerNoticeTreshold);
         }
 
         switch (state)
@@ -72,17 +69,26 @@ public class EnemyScript : MonoBehaviour
                     state = EnemyState.chasing;
                     agent.autoBraking = true;
                 }
+                else if (!agent.pathPending && agent.remainingDistance < 0.5f)
+                {
+                    GotoNextPoint();
+                }
+
                 break;
             case EnemyState.chasing:
+                agent.destination = player.transform.position;
+
+                if ((player.transform.position - transform.position).magnitude < 1.7f)
+                {
+                    player.TakeDamage(1);
+                }
+
                 if (playerNoticing == 0)
                 {
                     state = EnemyState.idle;
                     agent.autoBraking = false;
                     GotoNextPoint();
                 }
-                break;
-            case EnemyState.attacking:
-                //TODO
                 break;
         }
     }
@@ -91,9 +97,11 @@ public class EnemyScript : MonoBehaviour
     {
         const int mask = ~(1 << 9);
 
-        if (Physics.Raycast(transform.position, player.transform.position - transform.position, out RaycastHit hit, detectDistance, mask))
+        //Debug.DrawRay(transform.position + Vector3.up * 2f, ((playerCamera.transform.position - Vector3.up * 3) - transform.position) * detectDistance, Color.yellow, 0.1f);
+
+        if (Physics.Raycast(transform.position + Vector3.up * 2f, (playerCamera.transform.position - Vector3.up * 3) - transform.position, out RaycastHit hit, detectDistance, mask))
         {
-            if (hit.collider.gameObject.layer == 9)
+            if (hit.collider.gameObject.layer == 8)
             {
                 return true;
             }
@@ -115,7 +123,7 @@ public class EnemyScript : MonoBehaviour
 
     public bool Damage(int damage)
     {
-        if (dead)
+        if (state == EnemyState.dead)
             return false;
 
         health -= damage;
@@ -131,14 +139,15 @@ public class EnemyScript : MonoBehaviour
 
     void Kill()
     {
-        dead = true;
+        state = EnemyState.dead;
         StartCoroutine(DieRoutine());
     }
 
     IEnumerator DieRoutine()
     {
         animator.Play("Z_FallingBack");
-        yield return new WaitForSeconds(1.4f);
+        agent.isStopped = true;
+        yield return new WaitForSeconds(5f);
         gameObject.SetActive(false);
     }
 }

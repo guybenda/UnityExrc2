@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     public int health = 100;
-    public int maxHealth = 100;
+    public int maxHealth = 200;
     public int enemiesKilled = 0;
     public int enemyKillGoal = 5;
     public GameObject flash;
