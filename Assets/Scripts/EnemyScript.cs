@@ -58,7 +58,7 @@ public class EnemyScript : MonoBehaviour
         }
         else
         {
-            playerNoticing = Mathf.Clamp(playerNoticing - 1, 0, playerNoticeTreshold);
+            playerNoticing = Mathf.Clamp(playerNoticing - 2, 0, playerNoticeTreshold);
         }
 
         switch (state)
@@ -78,7 +78,7 @@ public class EnemyScript : MonoBehaviour
             case EnemyState.chasing:
                 agent.destination = player.transform.position;
 
-                if ((player.transform.position - transform.position).magnitude < 1.8f)
+                if ((player.transform.position - transform.position).magnitude < 2f)
                 {
                     player.TakeDamage(1);
                 }
