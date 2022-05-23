@@ -40,11 +40,6 @@ public class EnemyScript : MonoBehaviour
         animator.Play("Z_Run_InPlace");
     }
 
-    void Update()
-    {
-        //Physics.Raycast() 
-    }
-
     void FixedUpdate()
     {
         if (state == EnemyState.dead) return;
