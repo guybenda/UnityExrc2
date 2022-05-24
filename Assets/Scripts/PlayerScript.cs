@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject flash;
     public GameObject pistol;
     public int damage = 34;
+    public Sprite enemySprite;
 
     AudioSource pistolAudioSource;
     Camera cam;

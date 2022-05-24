@@ -22,6 +22,7 @@ public class EnemyScript : MonoBehaviour
     private PlayerScript player;
     private Camera playerCamera;
     private Animator animator;
+    private SpriteRenderer alertSprite;
     private EnemyState state = EnemyState.idle;
     private int playerNoticing = 0;
 
@@ -34,10 +35,27 @@ public class EnemyScript : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
         playerCamera = GameObject.FindWithTag("Player").GetComponentInChildren<Camera>();
 
+        var alert = new GameObject("MinimapSprite");
+        alert.transform.parent = gameObject.transform;
+        alert.transform.localScale = Vector3.one * 0.3f;
+        alert.layer = 11;
+
+        alertSprite = alert.AddComponent<SpriteRenderer>();
+        alertSprite.transform.localPosition = Vector3.up * 50f;
+        alertSprite.sprite = player.enemySprite;
 
         GotoNextPoint();
 
         animator.Play("Z_Run_InPlace");
+    }
+
+    void Update()
+    {
+        var alertEulerRotation = Vector3.zero;
+        alertEulerRotation.y = player.transform.rotation.eulerAngles.y;
+        alertEulerRotation.x = 90;
+
+        alertSprite.transform.eulerAngles = alertEulerRotation;
     }
 
     void FixedUpdate()
@@ -138,6 +156,7 @@ public class EnemyScript : MonoBehaviour
     {
         animator.Play("Z_FallingBack");
         agent.isStopped = true;
+        alertSprite.gameObject.SetActive(false);
         yield return new WaitForSeconds(5f);
         gameObject.SetActive(false);
     }
