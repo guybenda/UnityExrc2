@@ -26,7 +26,6 @@ public class EnemyScript : MonoBehaviour
     private EnemyState state = EnemyState.idle;
     private int playerNoticing = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -108,8 +107,6 @@ public class EnemyScript : MonoBehaviour
     {
         const int mask = ~(1 << 9);
 
-        //Debug.DrawRay(transform.position + Vector3.up * 2f, ((playerCamera.transform.position - Vector3.up * 3) - transform.position) * detectDistance, Color.yellow, 0.1f);
-
         if (Physics.Raycast(transform.position + Vector3.up * 2f, (playerCamera.transform.position - Vector3.up * 3) - transform.position, out RaycastHit hit, detectDistance, mask))
         {
             if (hit.collider.gameObject.layer == 8)
@@ -118,7 +115,7 @@ public class EnemyScript : MonoBehaviour
             }
         }
 
-        return false; // TODO
+        return false;
     }
 
 
